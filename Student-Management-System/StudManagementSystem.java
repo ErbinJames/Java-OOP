@@ -89,7 +89,7 @@ public class StudManagementSystem {
     }
     public static void main (String[] args) {
 
-        //Main method, where it handles menu loop using switch case
+        //Main method, it handles menu loop using switch case
         while (true) {
             displayMenu();
             int choice = scanner.nextInt();
