@@ -23,7 +23,7 @@ class Employee {
         this.department = department;
     }
 
-    //instance method
+    //method for display employee info (instance method)
     public void displayInfo() {
         System.out.println("Name: " + name);
         System.out.println("ID: " + employeeID);
@@ -47,6 +47,38 @@ public class EmployeeManagementSystem {
     static ArrayList<Employee> employees = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
 
+    //main method to run menu using switch case
+    public static void main (String[] args) {
+        int choice;
+        do {
+            displayMenu();
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch(choice) {
+                case 1:
+                    addEmployee();
+                    break;
+                case 2:
+                    viewEmployees();
+                    break;
+                case 3:
+                    calculateAnnualSalary();
+                    break;
+                case 4:
+                    giveSalaryRaise();
+                    break;
+                case 5:
+                    System.out.println("Exiting program...");
+                    break;
+                default:
+                    System.out.println("your choice is invalid, try again!\n");
+            }
+        } while (choice !=5);
+
+        scanner.close();
+    }
+
     //method to display menu options
     public static void displayMenu() {
         System.out.println("Welcome to Employee Payroll Management System");
@@ -57,7 +89,7 @@ public class EmployeeManagementSystem {
         System.out.println("5. Exit\n");
         System.out.print("Enter your Choice: ");
     }
-
+    
     // method to add an Employee
     public static void addEmployee() {
         System.out.print("Enter employee name: ");
@@ -130,35 +162,5 @@ public class EmployeeManagementSystem {
             }
         }
         System.out.println("Employee not found!\n");
-    }
-
-    //main method to run menu using switch case
-    public static void main (String[] args) {
-        int choice;
-        do {
-            displayMenu();
-            choice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch(choice) {
-                case 1:
-                    addEmployee();
-                    break;
-                case 2:
-                    viewEmployees();
-                    break;
-                case 3:
-                    calculateAnnualSalary();
-                    break;
-                case 4:
-                    giveSalaryRaise();
-                    break;
-                case 5:
-                    System.out.println("Exiting program...");
-                    break;
-                default:
-                    System.out.println("your choice is invalid, try again!\n");
-            }
-        } while (choice !=5);
     }
 }
