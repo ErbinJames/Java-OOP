@@ -14,7 +14,7 @@ class Student {
     public double calculateAverage() {
         int sum = 0;
         for (int grade : grades) {
-            sum += grade;
+            sum += grade; 
         }
         return (double) sum / grades.length;
     }
@@ -46,7 +46,7 @@ class Student {
 public class StudentGradeManager {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+        
         // Get student name
         System.out.print("Enter student name: ");
         String name = scanner.nextLine();
