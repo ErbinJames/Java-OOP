@@ -29,7 +29,7 @@ class Employee {
         System.out.println("ID: " + employeeID);
         System.out.println("Salary: $" + String.format("%.2f", salary));
         System.out.println("Department: " + department);
-        System.out.println(""); //inserts new line
+        System.out.println(); //inserts new line
     }
 
     //method to calculate annual salary (12 months)
