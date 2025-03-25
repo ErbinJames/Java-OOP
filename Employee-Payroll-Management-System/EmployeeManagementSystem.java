@@ -88,8 +88,12 @@ public class EmployeeManagementSystem {
         }
 
         System.out.println("\n--- Employee Records ---");
+
+        int count = 1;
         for (Employee emp: employees) {
+            System.out.println("\nEmployee " + count + ":");
             emp.displayInfo();
+            count++;
         }
     }
 
@@ -153,7 +157,7 @@ public class EmployeeManagementSystem {
                     System.out.println("Exiting program...");
                     break;
                 default:
-                    System.out.println("your choice is invalid, try again!");
+                    System.out.println("your choice is invalid, try again!\n");
             }
         } while (choice !=5);
     }
