@@ -1,3 +1,5 @@
+package Secure_Banking_System;
+
 import java.util.Scanner;
 
 public class SecureBankingSystem {
@@ -8,6 +10,7 @@ public class SecureBankingSystem {
         while (true) {
             displayMenu();
             int choice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -48,57 +51,122 @@ public class SecureBankingSystem {
         System.out.println("5. Apply Interest");
         System.out.println("6. View Transaction History");
         System.out.println("7. Exit\n");
-        System.out.println("Enter your choice: ");
+        System.out.print("Enter your choice: ");
     }
 
     //method to create Account
     public static void createAccount() {
-        System.out.println("Enter Account Number (10 digits): ");
-        String accountNumber = scanner.nextLine();
-
-        System.out.println("Enter Account Holder Name: ");
-        String accountHolder = scanner.nextLine();
-
-        System.out.println("Enter Initial Balance: ");
-        double balance = scanner.nextDouble();
+        System.out.print("Enter Account Number (10 digits): ");
+        String accountNumber = scanner.nextLine(); 
+    
+        //condition for validation
+        if (!accountNumber.matches("\\d{10}")) {
+            System.out.println("Error! Account number must be exactly 10 digits.");
+            return;
+        }
+    
+        System.out.print("Enter Account Holder Name: ");
+        String accountHolder = scanner.nextLine(); // Read name correctly
+    
+        System.out.print("Enter Initial Deposit: ");
         
+        //Ensure valid double input
+        if (!scanner.hasNextDouble()) {
+            System.out.println("Error: Invalid balance amount.");
+            scanner.next(); // Clear invalid input
+            return;
+        }
+        double balance = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline 
+    
+        // Create a new bank account after validation
         bankAccount = new BankAccount(accountNumber, accountHolder, balance);
-        System.out.println("Account Successfully created\n");
+        System.out.println("Account created successfully!\n");
     }
 
     //view account details method
     public static void viewAccountDetails() {
+        System.out.println("--- Account Details ---");
         if (bankAccount == null) {
             System.out.println("No account found. Please create an account first.");
             return;
         }
         System.out.println("Account Holder: " + bankAccount.getAccountHolder());
         System.out.println("Account Number: " + bankAccount.getAccountNumber());
-        System.out.println("Balance: $" + bankAccount.getBalance());
+        System.out.printf("Balance: $%.0f%n", bankAccount.getBalance());
+        System.out.println();
     }
 
     // Deposit Money method
     public static void depositMoney() {
         if (bankAccount == null) {
-            System.out.println("No Account found. Please create an account first");
+            System.out.println("No Account found. Please create an account first.");
             return;
         }
-        System.out.println("Enter deposit amount: ");
+    
+        System.out.print("Enter deposit amount: ");
+        
+        if (!scanner.hasNextDouble()) { // Check if input is a valid number
+            System.out.println("Invalid input! Please enter a valid amount.");
+            scanner.next(); // Consume invalid input
+            return;
+        }
+    
         double depositAmount = scanner.nextDouble();
+        scanner.nextLine(); // Consume leftover newline
+    
+        if (depositAmount <= 0) { // Prevent negative or zero deposits
+            System.out.println("Error: Deposit amount must be greater than zero.");
+            return;
+        }
+    
         bankAccount.deposit(depositAmount);
+        System.out.printf("Deposit successful. New Balance: $%.0f%n", bankAccount.getBalance());
+        System.out.printf("Transaction recorded: Deposit $%.0f%n", depositAmount);
+        System.out.println();// newline
     }
+    
 
     // withdraw money method
     public static void withdrawMoney() {
         if (bankAccount == null) {
-            System.out.println("No Account found. Please create an account first");
+            System.out.println("No Account found. Please create an account first.");
             return;
         }
-        System.out.println("Enter withdrawal amount: ");
+    
+        System.out.print("Enter withdrawal amount: ");
+    
+        // Validate input
+        if (!scanner.hasNextDouble()) {
+            System.out.println("Invalid input! Please enter a valid amount.");
+            scanner.next(); // Consume invalid input
+            return;
+        }
+    
         double withdrawAmount = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline
+    
+        // Ensure the withdrawal amount is positive
+        if (withdrawAmount <= 0) {
+            System.out.println("Error: Withdrawal amount must be greater than zero.");
+            return;
+        }
+    
+        // Check if the balance is sufficient
+        if (withdrawAmount > bankAccount.getBalance()) {
+            System.out.println("Error: Insufficient balance.");
+            return;
+        }
+    
+        // Perform withdrawal
         bankAccount.withdraw(withdrawAmount);
+    
+        // Display confirmation messages
+        System.out.printf("Withdrawal successful. New Balance: $%.0f%n", bankAccount.getBalance());
+        System.out.printf("Transaction recorded: Withdrawal $%.0f%n", withdrawAmount);
+        System.out.println();// newline
     }
-
+    
     // apply interest method
     public static void applyInterest(){
         if (bankAccount == null) {
@@ -106,6 +174,7 @@ public class SecureBankingSystem {
             return;
         }
         bankAccount.applyInterest();
+        System.out.println();// newline
     }
 
     // view transaction history method
@@ -115,5 +184,6 @@ public class SecureBankingSystem {
             return;
         }
         bankAccount.printTransactionHistory();
+        System.out.println();// newline
     }
 }

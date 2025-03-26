@@ -1,3 +1,5 @@
+package Secure_Banking_System;
+
 import java.util.ArrayList;
 
 public class BankAccount {
@@ -26,11 +28,10 @@ public class BankAccount {
 
     // setter and getter method for account number (must be 10 digits)
     public void setAccountNumber(String accountNumber) {
-        if (accountNumber.matches("\\d{10}")) {
+        if (accountNumber != null && accountNumber.matches("\\d{10}")) {
             this.accountNumber = accountNumber;
         } else {
-            System.out.println("Error: Account number must be exactly 10 digits.");
-            this.accountNumber = "invalid";
+            System.out.println("Error:Account number must be exactly 10 digits.");
         }
     }
     //getter method for account number
@@ -71,7 +72,10 @@ public class BankAccount {
 
     //record transaction in history
     private void recordTransaction(String transaction) {
-        transactionHistory.add(transaction);
+        if (this.transactionHistory == null) {
+            this.transactionHistory = new ArrayList<>();
+        }
+        this.transactionHistory.add(transaction);
     }
 
     //getter for transaction history
@@ -85,10 +89,9 @@ public class BankAccount {
     public void deposit(double amount) {
         if (amount > 0) {
             balance += amount;
-            recordTransaction("Deposit: $" + amount);
-            System.out.println("Deposit successful. New balance: $" + balance);
+            recordTransaction("Deposit $" + String.format("%.0f", amount));
         } else {
-            System.out.println("Error: Deposit amount must be greater than zero.");
+            System.out.println("Error! Deposit amount must be greater than zero.");
         }
     }
 
@@ -96,8 +99,7 @@ public class BankAccount {
     public void withdraw(double amount) {
         if (amount > 0 && amount <= balance) {
             balance -= amount;
-            recordTransaction("Withdraw: $" + amount);
-            System.out.println("Withdrawal successful. New balance: $" + balance);
+            recordTransaction("Withdraw $" + String.format("%.0f", amount));
         } else {
             System.out.println("Error: Insufficient funds or invalid amount.");
         }
@@ -107,8 +109,8 @@ public class BankAccount {
     public void applyInterest() {
         double interest = balance * (interestRate / 100);
         balance += interest;
-        recordTransaction(String.format("Interest Applied: $%.2f", interest));
-        System.out.println(String.format("Interest Applied. New balance: $%.2f", balance));
+        recordTransaction(String.format("Interest Applied: $%.0f%n", interest));
+        System.out.printf("Interest Applied. New balance: $%.0f (Interest Rate: 5%% annual) %n", balance);
     }
 
     //display transaction history
