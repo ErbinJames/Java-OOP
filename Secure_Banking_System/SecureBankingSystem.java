@@ -64,12 +64,18 @@ public class SecureBankingSystem {
             System.out.println("Error! Account number must be exactly 10 digits.");
             return;
         }
-    
+        
         System.out.print("Enter Account Holder Name: ");
         String accountHolder = scanner.nextLine(); // Read name correctly
-    
-        System.out.print("Enter Initial Deposit: ");
         
+        //condition for Account holder validation
+        if (accountHolder.isEmpty()) {
+            System.out.println("Error! Account holder name cannot be empty.");
+            return;
+        }
+        
+        System.out.print("Enter Initial Deposit: ");
+
         //Ensure valid double input
         if (!scanner.hasNextDouble()) {
             System.out.println("Error: Invalid balance amount.");
@@ -78,7 +84,13 @@ public class SecureBankingSystem {
         }
         double balance = scanner.nextDouble();
         scanner.nextLine(); // Consume newline 
-    
+
+        //Validate initial deposit (cannot be negative)
+        if (balance < 0) {
+            System.out.println("Error! Initial deposit cannot be negative.");
+            return;
+        }
+        
         // Create a new bank account after validation
         bankAccount = new BankAccount(accountNumber, accountHolder, balance);
         System.out.println("Account created successfully!\n");
@@ -176,7 +188,7 @@ public class SecureBankingSystem {
         bankAccount.applyInterest();
         System.out.println();// newline
     }
-
+    
     // view transaction history method
     public static void viewTransactionHistory() {
         if (bankAccount == null) {
