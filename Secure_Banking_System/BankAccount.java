@@ -9,30 +9,37 @@ public class BankAccount {
     private ArrayList<String> transactionHistory;
     private double interestRate;
 
-    //constructor
-    public BankAccount(String accountNumber, String accountHolder, double balance) {
-        setAccountNumber(accountNumber);
-        setAccountHolder(accountHolder);
-        
-        if (balance < 0) {
-            System.out.println("Error: Initial deposit cannot be negative. Setting balance to $0.");
-            this.balance = 0;
-        } else {
-            setBalance(balance);
-            recordTransaction("Account created with initial deposit: $" + balance);
-        }
-
-        this.interestRate = 5.0; //5% interest
+    // Private constructor (prevents direct instantiation)
+    private BankAccount(String accountNumber, String accountHolder, double balance) {
+        this.accountNumber = accountNumber;
+        this.accountHolder = accountHolder;
+        this.balance = balance;
         this.transactionHistory = new ArrayList<>();
+        this.interestRate = 5.0; // Default interest rate
+        recordTransaction("Account created with initial deposit: $" + String.format("%.0f", balance));
     }
 
-    // setter and getter method for account number (must be 10 digits)
-    public void setAccountNumber(String accountNumber) {
-        if (accountNumber != null && accountNumber.matches("\\d{10}")) {
-            this.accountNumber = accountNumber;
-        } else {
-            System.out.println("Error:Account number must be exactly 10 digits.");
+    // Static factory method with validation on Create account
+    public static BankAccount createAccount(String accountNumber, String accountHolder, double balance) {
+        if (accountNumber == null || !accountNumber.matches("\\d{10}")) {
+            System.out.println("Error: Account number must be exactly 10 digits.");
+            return null; // Account creation fails
         }
+        if (accountHolder == null || accountHolder.trim().isEmpty()) {
+            System.out.println("Error: Account holder name cannot be empty.");
+            return null;
+        }
+        if (balance < 0) {
+            System.out.println("Error: Initial deposit cannot be negative.");
+            return null;
+        }
+
+        return new BankAccount(accountNumber, accountHolder, balance);
+    }
+
+    // setter and getter method for account number 
+    public void setAccountNumber(String accountNumber) {
+       this.accountNumber = accountNumber;
     }
     //getter method for account number
     public String getAccountNumber() {
@@ -41,11 +48,7 @@ public class BankAccount {
 
     //setter and getter method for account holder (with validation - cannot be null/empty)
     public void setAccountHolder(String accountHolder) {
-        if (accountHolder != null && !accountHolder.trim().isEmpty()) {
-            this.accountHolder = accountHolder;
-        } else {
-            System.out.println("Error: Account holder name cannot be empty");
-        }
+        this.accountHolder = accountHolder;
     }
     //getter method for account holder 
     public String getAccountHolder() {
@@ -54,11 +57,7 @@ public class BankAccount {
 
     //Setter and Getter for balance (with validation - must be non-negative)
     public void setBalance(double balance) {
-        if (balance >= 0) {
-            this.balance = balance;
-        } else {
-            System.out.println("Error: Balance cannot be negative.");
-        }
+       this.balance = balance;
     }
     //getter for balance
     public double getBalance() {

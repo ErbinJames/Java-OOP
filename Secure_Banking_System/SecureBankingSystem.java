@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class SecureBankingSystem {
     private static Scanner scanner = new Scanner(System.in);
-    private static BankAccount bankAccount = null;
+    private static BankAccount bankAccount;
 
     public static void main (String[] args) {
         while (true) {
@@ -59,20 +59,8 @@ public class SecureBankingSystem {
         System.out.print("Enter Account Number (10 digits): ");
         String accountNumber = scanner.nextLine(); 
     
-        //condition for validation
-        if (!accountNumber.matches("\\d{10}")) {
-            System.out.println("Error! Account number must be exactly 10 digits.");
-            return;
-        }
-        
         System.out.print("Enter Account Holder Name: ");
         String accountHolder = scanner.nextLine(); // Read name correctly
-        
-        //condition for Account holder validation
-        if (accountHolder.isEmpty()) {
-            System.out.println("Error! Account holder name cannot be empty.");
-            return;
-        }
         
         System.out.print("Enter Initial Deposit: ");
 
@@ -85,15 +73,14 @@ public class SecureBankingSystem {
         double balance = scanner.nextDouble();
         scanner.nextLine(); // Consume newline 
 
-        //Validate initial deposit (cannot be negative)
-        if (balance < 0) {
-            System.out.println("Error! Initial deposit cannot be negative.");
-            return;
-        }
-        
         // Create a new bank account after validation
-        bankAccount = new BankAccount(accountNumber, accountHolder, balance);
-        System.out.println("Account created successfully!\n");
+        bankAccount = BankAccount.createAccount(accountNumber, accountHolder, balance);
+
+        if (bankAccount != null) {
+            System.out.println("Account created successfully!\n");
+        } else {
+            System.out.println("Account creation failed. Please try again.");
+        }
     }
 
     //view account details method
